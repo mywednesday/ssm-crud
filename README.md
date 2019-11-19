@@ -4,7 +4,7 @@
 
 ssm: SpringMVC + Spring + MyBatis
 
-DE: Eclipse
+IDE: Eclipse
 
 数据库: MySql 8.0.11
 
