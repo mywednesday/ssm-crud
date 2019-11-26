@@ -51,19 +51,19 @@
 				</tr>
 				<c:forEach items="${ pageInfo.list }" var="emp">
 					<tr>
-						<th>${emp.empId }</th>
-						<th>${emp.empName }</th>
-						<th>${emp.gender=="M" ? "男" : "女" }</th>
-						<th>${emp.email }</th>
-						<th>${emp.department.deptName }</th>
-						<th>
+						<td>${emp.empId }</td>
+						<td>${emp.empName }</td>
+						<td>${emp.gender=="M" ? "男" : "女" }</td>
+						<td>${emp.email }</td>
+						<td>${emp.department.deptName }</td>
+						<td>
 							<button type="button" class="btn btn-primary btn-sm">
  								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑
 							</button>
 							<button type="button" class="btn btn-danger btn-sm">
  								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 删除
 							</button>
-						</th>
+						</td>
 					</tr>
 				</c:forEach>
 			</table>
