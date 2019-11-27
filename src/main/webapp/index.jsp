@@ -21,6 +21,58 @@
  
 </head>
 <body>
+
+	<!-- 模态框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  		<div class="modal-dialog" role="document">
+    		<div class="modal-content">
+      			<div class="modal-header">
+       				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    	    <h4 class="modal-title" id="myModalLabel">员工添加</h4>
+    			</div>
+	    		<div class="modal-body">
+					<form class="form-horizontal">
+  						<div class="form-group">
+    						<label class="col-sm-2 control-label">lastName</label>
+    						<div class="col-sm-10">
+      							<input type="text" name="empName" class="form-control" id="inputLastName" placeholder="lastName">
+    						</div>
+  						</div>
+  						<div class="form-group">
+    						<label class="col-sm-2 control-label">email</label>
+    						<div class="col-sm-10">
+      							<input type="email" name="email" class="form-control" id="inputEmail" placeholder="email">
+    						</div>
+  						</div>
+  						<div class="form-group">
+    						<label class="col-sm-2 control-label">gender</label>
+  							<div>
+  								<label class="radio-inline">
+  									<input type="radio" name="gender" id="gender1_add_input" value="M" checked> 男
+								</label>
+								<label class="radio-inline">
+  									<input type="radio" name="gender" id="gender2_add_input" value="F"> 女
+								</label>
+  							</div>
+  						</div>
+  						<div class="form-group">
+    						<label class="col-sm-2 control-label">department</label>
+  							<div class="col-sm-4">
+  								<select class="form-control" name="dId">
+								</select>
+  							</div>
+  						</div>
+					</form>
+				</div>
+		    	<div class="modal-footer">
+    				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			        <button type="button" class="btn btn-primary">保存</button>
+    			</div>
+	 		</div>
+		</div>
+	</div>
+
+
 	<!-- 使用bootstrap搭建页面 -->
 	<div class="container">
 		<!-- 标题 -->
@@ -32,14 +84,14 @@
 		<!-- 按钮 -->
 		<div class="row">
 			<div class="col-md-4 col-md-offset-8">
-				<button type="button" class="btn btn-primary">新增</button>
+				<button type="button" class="btn btn-primary" id="emp_add_modal_btn">新增</button>
 				<button type="button" class="btn btn-danger">删除</button>
 			</div>
 		</div>
 		<!-- 表格数据 -->
 		<div class="row">
 			<div class="col-md-12">
-				<table class="table table-striped table-hover", id="emps_table">
+				<table class="table table-striped table-hover" id="emps_table">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -178,6 +230,13 @@
 	
 			$("<nav></nav>").append(ul).appendTo("#page_nav_area");
 		}
+		
+		
+		$("#emp_add_modal_btn").click(function(){
+			$('#myModal').modal({
+				backdrop: "static"
+			});
+		});
 	</script>
 </body>
 
