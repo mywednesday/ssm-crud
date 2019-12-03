@@ -58,7 +58,7 @@
   						<div class="form-group">
     						<label class="col-sm-2 control-label">department</label>
   							<div class="col-sm-4">
-  								<select class="form-control" name="dId">
+  								<select class="form-control" name="dId" id="department_select">
 								</select>
   							</div>
   						</div>
@@ -66,7 +66,7 @@
 				</div>
 		    	<div class="modal-footer">
     				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-			        <button type="button" class="btn btn-primary">保存</button>
+			        <button type="button" class="btn btn-primary" id="emp_save_btn">保存</button>
     			</div>
 	 		</div>
 		</div>
@@ -125,6 +125,10 @@
 	
 	<!-- 此处页面加载完成， 发送ajax请求 -->
 	<script type="text/javascript">
+		
+		var totalRecordCount = 0
+		var currentPage = 0
+		
 		$(function(){
 			to_page(1)
 		});
@@ -160,8 +164,14 @@
 				var deptNameTd = $("<td></td>").append(item.department.deptName);
 				var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm")
 								.append($("<span></span>")).addClass("glyphicon glyphicon-pencil").append("编辑");
+				editBtn.click(function() {
+					alert(item.empName);
+				});
 				var deleteBtn = $("<button></button>").addClass("btn btn-danger btn-sm")
 								.append($("<span></span>")).addClass("glyphicon glyphicon-trash").append("删除");
+				deleteBtn.click(function() {
+					deleteEmp(item.empId);
+				});
 				var btnTd = $("<td></td>").append(editBtn).append(" ").append(deleteBtn);
 				
 				$("<tr></tr>").append(empIdTd)
@@ -174,8 +184,10 @@
 		}
 
 		function build_info_area(result) {
+			currentPage = result.extend.pageInfo.pageNum;
+			totalRecordCount = result.extend.pageInfo.total;
 			$("#page_info_area").empty();
-			$("#page_info_area").append("当前" + result.extend.pageInfo.pageNum + "页，总" + result.extend.pageInfo.pages + "页，总" + result.extend.pageInfo.total + "条记录");
+			$("#page_info_area").append("当前" + currentPage + "页，总" + result.extend.pageInfo.pages + "页，总" + totalRecordCount + "条记录");
 		}
 		
 
@@ -231,12 +243,73 @@
 			$("<nav></nav>").append(ul).appendTo("#page_nav_area");
 		}
 		
-		
+		// 绑定“新增”按钮事件
 		$("#emp_add_modal_btn").click(function(){
+			//获得部门信息
+			getDepts();
+			
+			//打开模态框
 			$('#myModal').modal({
 				backdrop: "static"
 			});
 		});
+		
+		function getDepts() {
+			$.ajax({
+				url:"${APP_PATH}/depts",
+				type:"GET",
+				success:function(result){
+					console.log(result);
+					buildDepartmentSelect(result.extend.depts);
+				}
+			});
+		}
+		
+		function buildDepartmentSelect(depts) {
+			$("#department_select").empty();
+			
+			$.each(depts, function(index, dept) {
+				var li = $("<option></option>").append(dept.deptName).attr("value", dept.deptId);
+				$("#department_select").append(li)
+			});
+		}
+		
+		function validate_add_form() {
+			return true
+		}
+		
+		$("#emp_save_btn").click(function(){
+			
+			if (!validate_add_form()) {
+				return false;
+			}
+			
+			$.ajax({
+				url:"${APP_PATH}/emps",
+				type:"POST",
+				data:$("#myModal form").serialize(),
+				success:function(result){
+					alert(result ? "保存成功！" : "保存失败！");
+					if (result) {
+						$('#myModal').modal('hide')
+						to_page(totalRecordCount);
+					}
+				}
+			});
+		});
+		
+		function deleteEmp(employeeId) {
+			$.ajax({
+				url:"${APP_PATH}/emps/" + employeeId,
+				type:"DELETE",
+				success:function(result){
+					alert(result ? "删除成功！" : "删除失败！");
+					if (result) {
+						to_page(currentPage);
+					}
+				}
+			});
+		}
 	</script>
 </body>
 

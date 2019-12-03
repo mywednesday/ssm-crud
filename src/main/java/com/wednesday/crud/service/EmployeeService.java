@@ -13,6 +13,18 @@ public class EmployeeService {
 	
 	@Autowired
 	EmployeeMapper employeeMapper;
+	
+	public int save(Employee employee) {
+		return employeeMapper.insertSelective(employee);
+	}
+	
+	public int delete(Integer empId) {
+		return employeeMapper.deleteByPrimaryKey(empId);
+	}
+	
+	public int update(Employee employee) {
+		return employeeMapper.updateByPrimaryKey(employee);
+	}
 
 	public List<Employee> getAll() {
 		return employeeMapper.selectByExampleWithDept(null);
